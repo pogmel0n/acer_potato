@@ -1,27 +1,34 @@
 #include <iostream>
 #include <fstream>
-#include <map>
 #include <vector>
 
 using namespace std;
 
-int search(vector<int> arr, int k) {
-	if (k == 0) {
-		return 1;
-	}
-
-	int result = 0;
-
-	for (int i = 0; i < arr.size(); i++) {
-		if ((k - arr[i]) < 0) {
-			continue;
-		}
-		vector<int> copy(arr);
-		copy.erase(copy.begin() + i);
-		result += search(copy, k - arr[i]);
-	}
-	
-	return result;	
+int subset_sum(vector<int> a, int sum)
+{
+    // Initializing the matrix
+    int n = a.size();
+    int tab[n + 1][sum + 1];
+    tab[0][0] = 1;
+    for (int i = 1; i <= sum; i++) {
+        tab[0][i] = 0;
+    }
+   
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 0; j <= sum; j++)
+        {
+            if (a[i - 1] > j) {
+                tab[i][j] = tab[i - 1][j];
+            }
+            else
+            {
+                tab[i][j] = tab[i - 1][j] + tab[i - 1][j - a[i - 1]];
+            }
+        }
+    } 
+ 
+    return tab[n][sum];
 }
 
 int main() {
@@ -36,7 +43,7 @@ int main() {
 		fin >> arr[i];
 	}
 	
-	cout << search(arr, k);
+	cout << subset_sum(arr, k);
 }
 
 /*

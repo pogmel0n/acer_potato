@@ -6,6 +6,7 @@ LANG: C++
 
 #include <fstream>
 #include <string>
+#include <iostream>
 using namespace std;
 #define MAX_N 300
 
@@ -19,14 +20,13 @@ string change_base(int num, int base) {
             res = to_string(remainder) + res;
         }
         else {
-            res = ('A' + (remainder - 10));
+			char c;
+			c = 'A' + (remainder - 10);
+            res = c + res;
         }
         num /= base;
     }
     
-    if ((res.size() == 1) && (res[0] > '9')) {
-        return "NONE";
-    }
     return res;
 }
 
@@ -54,10 +54,13 @@ int main() {
 
     for (int i = 1; i <= MAX_N; i++) {
         string num = change_base(i, base);
-        if (num == "NONE") {
-            continue;
-        }
         string square = change_base(i * i, base);
+		if (i == 39) {
+			cout << square << endl;
+		} 
+		if (square.size() == 1 && square[0] > '9') {
+			continue;
+		} 
         if (check_pal(square)) {
             fout << num << " " << square << "\n";
         }
